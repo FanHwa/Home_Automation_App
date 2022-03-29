@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/dialog_box_curved">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_device_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/device_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="text"
+            android:hint="Device Name"
+            android:textSize="20sp"
+            android:background="@drawable/dialog_box_curved"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/input_layout_device_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_device_name"
+        android:layout_marginTop="16dp"
+        >
+        <AutoCompleteTextView
+            android:id="@+id/device_type_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="text"
+            android:hint="Device Type"
+            android:textSize="20sp"
+            android:background="@drawable/dialog_box_curved"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_device_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_device_type"
+        android:layout_marginTop="16dp"
+        >
+        <EditText
+            android:id="@+id/device_location_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="text"
+            android:hint="Device Location"
+            android:textSize="20sp"
+            android:background="@drawable/dialog_box_curved"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_device_onCmd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_device_location"
+        android:layout_marginTop="16dp"
+        >
+        <EditText
+            android:id="@+id/device_onCmd_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="text"
+            android:hint="On Command"
+            android:textSize="20sp"
+            android:background="@drawable/dialog_box_curved"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_device_offCmd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_device_onCmd"
+        android:layout_marginTop="16dp"
+        >
+        <EditText
+            android:id="@+id/device_offCmd_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="text"
+            android:hint="Off Command"
+            android:textSize="20sp"
+            android:background="@drawable/dialog_box_curved"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/add_edit_device_cancel_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_device_offCmd"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toLeftOf="@id/add_edit_device_confirm_btn"
+        android:backgroundTint="@color/red"
+        android:text="Cancel" />
+    <Button
+        android:id="@+id/add_edit_device_confirm_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout_device_offCmd"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/primary"
+        android:text="Confirm"
+        />
+</RelativeLayout>
+</ScrollView>

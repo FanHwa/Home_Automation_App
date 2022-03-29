@@ -9,8 +9,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.home_automation_app.HomeActivity;
-
 import java.io.IOException;
 import java.util.UUID;
 

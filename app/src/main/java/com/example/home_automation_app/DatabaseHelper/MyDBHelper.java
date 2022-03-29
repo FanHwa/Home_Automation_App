@@ -2,12 +2,11 @@ package com.example.home_automation_app.DatabaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
+
 
 import com.example.home_automation_app.Models.Device;
 
@@ -31,7 +30,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     // Query to create table
     public static final String CREATE_TABLE_DEVICES = "CREATE TABLE " + TABLE_DEVICES  +
-            "(" + DEVICE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + DEVICE_NAME + " TEXT, " +
+            "(" + DEVICE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + DEVICE_NAME + " TEXT, " +
             DEVICE_TYPE + " TEXT, " +  DEVICE_LOCATION + " TEXT, " + DEVICE_ON_CMD + " TEXT, " +
             DEVICE_OFF_CMD + " TEXT );";
 
@@ -106,6 +105,29 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.close();
         return deviceArrayList;
 
+    }
+
+    public ArrayList<String> getRoomList() {
+        String query = "SELECT DISTINCT " + DEVICE_LOCATION + " FROM " + TABLE_DEVICES;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<String> roomArrayList = new ArrayList<>();
+
+        if(cursor.moveToFirst()) {
+
+            cursor.moveToFirst();
+            do {
+                roomArrayList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+
+        } else {
+            roomArrayList = null;
+        }
+        cursor.close();
+        db.close();
+        return roomArrayList;
     }
 
     /***
