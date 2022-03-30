@@ -64,9 +64,11 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text=" Add Room"
+        android:visibility="gone"
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/home_room_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/show_all_devices_btn"
@@ -81,15 +83,9 @@
         android:id="@+id/room_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/add_room_btn"
+        android:layout_below="@id/home_room_title"
         android:layout_marginTop="16dp"
-        android:padding="16dp" />
+        android:paddingBottom="16dp"/>
 
-    <ListView
-        android:id="@+id/temp_room_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/room_recycle_view"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

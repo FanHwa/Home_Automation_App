@@ -107,6 +107,84 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     }
 
+    /***
+     * Function to get devices according to location
+     * @param location Location name
+     * @return Array List of devices
+     */
+    public ArrayList<Device> getDevicesByLocation(String location) {
+        String query = "SELECT * FROM " + TABLE_DEVICES +
+                " WHERE " + DEVICE_LOCATION + " = '" + location + "' ";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Device> deviceArrayList = new ArrayList<>();
+
+        if(cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            do {
+                Device device = new Device();
+                device.setDeviceId(Integer.parseInt(cursor.getString(0)));
+                device.setDeviceName(cursor.getString(1));
+                device.setDeviceType(cursor.getString(2));
+                device.setDeviceLocation(cursor.getString(3));
+                device.setDeviceOnCmd(cursor.getString(4));
+                device.setDeviceOffCmd(cursor.getString(5));
+                deviceArrayList.add(device);
+            } while(cursor.moveToNext());
+
+        } else {
+            deviceArrayList = null;
+        }
+
+        cursor.close();
+        db.close();
+        return deviceArrayList;
+    }
+
+    public int getNumOfDevicesByLocation(String location) {
+        String query = "SELECT * FROM " + TABLE_DEVICES +
+                " WHERE " + DEVICE_LOCATION + " = '" + location + "' ";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public Device getDeviceById(int id) {
+        String query = "SELECT * FROM " + TABLE_DEVICES +
+                " WHERE " + DEVICE_ID + " = " + id + " ";
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Device device = new Device();
+
+        if(cursor.moveToFirst()) {
+            device.setDeviceId(Integer.parseInt(cursor.getString(0)));
+            device.setDeviceName(cursor.getString(1));
+            device.setDeviceType(cursor.getString(2));
+            device.setDeviceLocation(cursor.getString(3));
+            device.setDeviceOnCmd(cursor.getString(4));
+            device.setDeviceOffCmd(cursor.getString(5));
+        }
+
+
+        cursor.close();
+        db.close();
+        return device;
+    }
+
+    /***
+     * Function to get all location of devices
+     * @return room list
+     */
     public ArrayList<String> getRoomList() {
         String query = "SELECT DISTINCT " + DEVICE_LOCATION + " FROM " + TABLE_DEVICES;
 

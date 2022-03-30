@@ -1,6 +1,6 @@
 package com.example.home_automation_app.Activities;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -18,7 +18,7 @@ import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
 
-public class AllDeviceActivity extends AppCompatActivity implements DeviceCardAdapter.OnBtnClickListener, DeviceCardAdapter.OffBtnClickListener{
+public class ControlDeviceActivity extends AppCompatActivity implements DeviceCardAdapter.OnItemClickListener, DeviceCardAdapter.OnBtnClickListener, DeviceCardAdapter.OffBtnClickListener{
 
     private RecyclerView allDevicesRecyclerView;
     private DeviceCardAdapter deviceCardAdapter;
@@ -27,20 +27,31 @@ public class AllDeviceActivity extends AppCompatActivity implements DeviceCardAd
     private MyDBHelper dbHelper;
     private ArrayList<Device> deviceArrayList;
 
+    private String location;
+
+    public static String DEVICE_ID = "DEVICE_ID";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent i = getIntent();
+        location = i.getStringExtra(HomeActivity.LOCATION);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_all_devices);
+        setContentView(R.layout.activity_control_device);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("All Devices");
+        actionBar.setTitle(location);
 
         allDevicesRecyclerView = (RecyclerView) findViewById(R.id.all_device_recycle_view);
 
         dbHelper = new MyDBHelper(this,null,null,1);
-        deviceArrayList = dbHelper.getAllDevices();
+        if(location.equals("All Devices")) {
+            deviceArrayList = dbHelper.getAllDevices();
+        } else {
+            deviceArrayList = dbHelper.getDevicesByLocation(location);
+        }
 
         if(deviceArrayList != null) {
             setDevicesViewAdapter();
@@ -59,6 +70,10 @@ public class AllDeviceActivity extends AppCompatActivity implements DeviceCardAd
         allDevicesRecyclerView.setLayoutManager(layoutManager);
         allDevicesRecyclerView.setAdapter(deviceCardAdapter);
 
+        deviceCardAdapter.setOnItemClickListener(position -> {
+            onItemClick(position);
+        });
+
         deviceCardAdapter.setOnBtnClick(position -> {
             onBtnClick(position);
         });
@@ -68,7 +83,13 @@ public class AllDeviceActivity extends AppCompatActivity implements DeviceCardAd
         });
     }
 
-
+    @Override
+    public void onItemClick(int position) {
+        Intent i = new Intent(ControlDeviceActivity.this, EditDeviceActivity.class);
+        i.putExtra(DEVICE_ID, deviceArrayList.get(position).getDeviceId());
+        i.putExtra(HomeActivity.LOCATION, location);
+        startActivity(i);
+    }
 
     @Override
     public void onBtnClick(int position) {
@@ -81,4 +102,5 @@ public class AllDeviceActivity extends AppCompatActivity implements DeviceCardAd
         Device tempDevice = deviceArrayList.get(position);
         Toast.makeText(getApplicationContext(), tempDevice.getDeviceOffCmd(), Toast.LENGTH_SHORT).show();
     }
+
 }

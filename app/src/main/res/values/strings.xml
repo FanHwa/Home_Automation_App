@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Home Automation App</string>
     <string name="add_device">add_device</string>
+    <string name="delete_device">Delete Device</string>
     <string-array name="device_type_array">
         <item>Appliance</item>
         <item>Sensor</item>

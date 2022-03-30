@@ -67,6 +67,7 @@ public class DeviceCardAdapter extends RecyclerView.Adapter<DeviceCardAdapter.Vi
                 }
             });
 
+
             onBtn.setOnClickListener(v -> {
                 if (onListener != null) {
                     int position = getAdapterPosition();

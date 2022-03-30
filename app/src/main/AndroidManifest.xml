@@ -25,8 +25,9 @@
         <activity android:name=".Activities.DevicesActivity"/>
         <activity android:name=".Activities.AddDeviceActivity"
             android:parentActivityName=".Activities.HomeActivity"/>
-        <activity android:name=".Activities.AllDeviceActivity"
+        <activity android:name=".Activities.ControlDeviceActivity"
             android:parentActivityName=".Activities.HomeActivity"/>
+        <activity android:name=".Activities.EditDeviceActivity"/>
         <activity
             android:name=".Activities.HomeActivity"
             android:exported="true">

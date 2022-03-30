@@ -4,18 +4,18 @@ package com.example.home_automation_app.Activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.home_automation_app.BluetoothHelper.BtHelper;
+import com.example.home_automation_app.Components.Adapters.RoomCardAdapter;
 import com.example.home_automation_app.Components.Dialogs.AddDeviceDialog;
 import com.example.home_automation_app.DatabaseHelper.MyDBHelper;
 import com.example.home_automation_app.R;
@@ -23,14 +23,16 @@ import com.example.home_automation_app.R;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class HomeActivity extends AppCompatActivity implements AddDeviceDialog.AddDeviceListener {
+public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.OnItemClickListener, AddDeviceDialog.AddDeviceListener {
 
     // Widgets
     private Button addDeviceBtn, allDeviceBtn;
     private PopupWindow addDevicePopUp;
     private RelativeLayout mRelativeLayout;
     private RecyclerView roomRecyclerView;
-    private ListView tempRoomView;
+
+    private RoomCardAdapter roomCardAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // Bluetooth
     String deviceAddress = null;
@@ -40,7 +42,11 @@ public class HomeActivity extends AppCompatActivity implements AddDeviceDialog.A
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // Database
-    private MyDBHelper dbHelper;
+    public MyDBHelper dbHelper;
+    private ArrayList<String> roomArrayList;
+
+    //Static String
+    public static String LOCATION = "LOCATION";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements AddDeviceDialog.A
         callWidgets();
 
         dbHelper = new MyDBHelper(this,null,null,1);
+        roomArrayList = dbHelper.getRoomList();
 
         addDeviceBtn.setOnClickListener(v -> {
             Intent i = new Intent(HomeActivity.this, AddDeviceActivity.class);
@@ -61,10 +68,10 @@ public class HomeActivity extends AppCompatActivity implements AddDeviceDialog.A
         });
 
         allDeviceBtn.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, AllDeviceActivity.class));
+            viewAllDevice();
         });
 
-        tempDisplayRoom();
+        setRoomsViewAdapter();
 
     }
 
@@ -76,18 +83,49 @@ public class HomeActivity extends AppCompatActivity implements AddDeviceDialog.A
         roomRecyclerView = findViewById(R.id.room_recycle_view);
     }
 
+    private void viewAllDevice() {
+        Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
+        i.putExtra(LOCATION, "All Devices");
+        startActivity(i);
+    }
+
+    public void setRoomsViewAdapter() {
+        roomRecyclerView.setHasFixedSize(true);
+        layoutManager = new GridLayoutManager(this, 2);
+        roomCardAdapter = new RoomCardAdapter(roomArrayList, dbHelper);
+
+        roomRecyclerView.setLayoutManager(layoutManager);
+        roomRecyclerView.setAdapter(roomCardAdapter);
+
+        roomCardAdapter.setOnItemClickListener(position -> {
+            onItemClick(position);
+        });
+    }
+
+
+    @Override
+    public void onItemClick(int position) {
+        Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
+        i.putExtra(LOCATION, roomArrayList.get(position));
+        startActivity(i);
+        Toast.makeText(getApplicationContext(), roomArrayList.get(position), Toast.LENGTH_SHORT).show();
+    }
+
     public void onAddDeviceConfirm(String name, String type, String location, String onCmd, String offCmd) {
         Toast.makeText(HomeActivity.this, "Confirm Added", Toast.LENGTH_SHORT).show();
     }
 
-    private void tempDisplayRoom() {
-        tempRoomView = findViewById(R.id.temp_room_list);
-        ArrayList<String> roomArrayList = dbHelper.getRoomList();
 
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, roomArrayList);
-        tempRoomView.setAdapter(adapter);
 
-    }
+
+//    private void tempDisplayRoom() {
+//        tempRoomView = findViewById(R.id.temp_room_list);
+//        ArrayList<String> roomArrayList = dbHelper.getRoomList();
+//
+//        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, roomArrayList);
+//        tempRoomView.setAdapter(adapter);
+//
+//    }
 
 //    private void showAddDevicePopUp() {
 //        LayoutInflater inflater = (LayoutInflater) HomeActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
