@@ -3,6 +3,7 @@ package com.example.home_automation_app.Activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.example.home_automation_app.DatabaseHelper.MyDBHelper;
 import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ControlDeviceActivity extends AppCompatActivity implements DeviceCardAdapter.OnItemClickListener, DeviceCardAdapter.OnBtnClickListener, DeviceCardAdapter.OffBtnClickListener{
@@ -86,20 +88,43 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
     @Override
     public void onItemClick(int position) {
         Intent i = new Intent(ControlDeviceActivity.this, EditDeviceActivity.class);
-        i.putExtra(DEVICE_ID, deviceArrayList.get(position).getDeviceId());
-        i.putExtra(HomeActivity.LOCATION, location);
-        startActivity(i);
+        i.putExtra("DEVICE", deviceArrayList.get(position));
+        i.putExtra("POSITION", position);
+        startActivityForResult(i, 1);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == 1) {
+                finish();
+            }
+        }
     }
 
     @Override
     public void onBtnClick(int position) {
         Device tempDevice = deviceArrayList.get(position);
+        try {
+            BluetoothConnectActivity.btHelper.sendMessage(tempDevice.getDeviceOnCmd());
+        } catch(IOException e) {
+            //Add disconnect function
+            // Start Again
+        }
+
         Toast.makeText(getApplicationContext(), tempDevice.getDeviceOnCmd(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void offBtnClick(int position) {
         Device tempDevice = deviceArrayList.get(position);
+        try {
+            BluetoothConnectActivity.btHelper.sendMessage(tempDevice.getDeviceOffCmd());
+
+        } catch(IOException e) {
+            // Add disconnect function
+            // Start Again
+        }
         Toast.makeText(getApplicationContext(), tempDevice.getDeviceOffCmd(), Toast.LENGTH_SHORT).show();
     }
 

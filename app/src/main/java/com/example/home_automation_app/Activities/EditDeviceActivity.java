@@ -3,6 +3,7 @@ package com.example.home_automation_app.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,15 +35,16 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
     private int deviceId;
 
     private Device device;
-    private String location;
+    private int location;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent i = getIntent();
-        deviceId = i.getIntExtra(ControlDeviceActivity.DEVICE_ID, 0);
-        location = i.getStringExtra(HomeActivity.LOCATION);
+        device = i.getParcelableExtra("DEVICE");
+        location = i.getIntExtra("POSITION", 0);
+
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_add_edit_device);
@@ -50,7 +52,7 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
         actionBar.setTitle("Edit Device");
 
         dbHelper = new MyDBHelper(this,null,null,1);
-        device = dbHelper.getDeviceById(deviceId);
+//        device = dbHelper.getDeviceById(deviceId);
 
         callWidgets();
         setInputData();
@@ -106,8 +108,9 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
             dbHelper.updateDevice(device);
 
             Intent i = new Intent(this, ControlDeviceActivity.class);
-            i.putExtra(HomeActivity.LOCATION, location);
-            startActivity(i);
+            i.putExtra(HomeActivity.EDIT_CONFIRM, device);
+            i.putExtra("LOCATION", location);
+            setResult(1, i);
             finish();
             Toast.makeText(getApplicationContext(), "Device Updated", Toast.LENGTH_SHORT).show();
         }

@@ -16,10 +16,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.home_automation_app.BluetoothHelper.BtHelper;
 import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 public class BluetoothConnectActivity extends AppCompatActivity {
 
@@ -32,16 +34,9 @@ public class BluetoothConnectActivity extends AppCompatActivity {
     private Set<BluetoothDevice> devices;
     public static String DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-//    ActivityResultLauncher<Intent> activityResultLauncher=
-//            registerForActivityResult(
-//                    new ActivityResultContracts.StartActivityForResult(ActivityResult activityResult),
-//                    new ActivityResultCallback<ActivityResult>() {
-//                        @Override
-//                        public void onActivityResult(ActivityResult result) {
-//
-//                        }
-//                    }
-//            );
+    public static BtHelper btHelper;
+    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     ActivityResultLauncher<Intent> activityResultLauncher =
         registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -90,7 +85,6 @@ public class BluetoothConnectActivity extends AppCompatActivity {
         ArrayList list = new ArrayList();
 
         if(devices.size()>0) {
-
             // Get devices name and MAC Address
             for(BluetoothDevice bt : devices) {
                 list.add(bt.getName() + "\n" + bt.getAddress());
@@ -112,10 +106,12 @@ public class BluetoothConnectActivity extends AppCompatActivity {
             String info = ((TextView) view).getText().toString();
             String address = info.substring(info.length() - 17);
 
+            btHelper = new BtHelper(address, myUUID, BluetoothConnectActivity.this);
+            btHelper.Connect();
             //Change to next activity
-            Intent i = new Intent(BluetoothConnectActivity.this, HomeActivity.class);
-            i.putExtra(DEVICE_ADDRESS, address);
-            startActivity(i);
+//            Intent i = new Intent(BluetoothConnectActivity.this, HomeActivity.class);
+//            i.putExtra(DEVICE_ADDRESS, address);
+//            startActivity(i);
         }
     };
 

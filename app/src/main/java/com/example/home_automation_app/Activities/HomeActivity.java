@@ -18,6 +18,7 @@ import com.example.home_automation_app.BluetoothHelper.BtHelper;
 import com.example.home_automation_app.Components.Adapters.RoomCardAdapter;
 import com.example.home_automation_app.Components.Dialogs.AddDeviceDialog;
 import com.example.home_automation_app.DatabaseHelper.MyDBHelper;
+import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
@@ -43,35 +44,55 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
 
     // Database
     public MyDBHelper dbHelper;
+    private ArrayList<Device> deviceArrayList;
     private ArrayList<String> roomArrayList;
 
     //Static String
     public static String LOCATION = "LOCATION";
+    public static String EDIT_CONFIRM = "EDIT_CONFIRM";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent intent = getIntent();
+        Intent intent = getIntent();
+
+
 //        deviceAddress = intent.getStringExtra(BluetoothConnectActivity.DEVICE_ADDRESS);
+
+//        btHelper = new BtHelper(deviceAddress, myUUID, HomeActivity.this);
+//        btHelper.Connect();
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home);
 
         callWidgets();
 
         dbHelper = new MyDBHelper(this,null,null,1);
+        deviceArrayList = dbHelper.getAllDevices();
         roomArrayList = dbHelper.getRoomList();
 
         addDeviceBtn.setOnClickListener(v -> {
             Intent i = new Intent(HomeActivity.this, AddDeviceActivity.class);
-            startActivity(i);
+            startActivityForResult(i, 2);
         });
 
         allDeviceBtn.setOnClickListener(v -> {
             viewAllDevice();
         });
 
-        setRoomsViewAdapter();
+
+
+        if(roomArrayList != null) {
+            setRoomsViewAdapter();
+        }
+
+//        if(intent.getParcelableExtra(EDIT_CONFIRM) != null){
+//            // add update to the array list
+//            // Notify device and roomlist change
+//            // Update database
+//            //Use this new device, start control deviceActivity
+//        }
 
     }
 
@@ -86,7 +107,17 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
     private void viewAllDevice() {
         Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
         i.putExtra(LOCATION, "All Devices");
-        startActivity(i);
+        startActivityForResult(i, 2);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == 2) {
+                deviceArrayList = dbHelper.getAllDevices();
+                roomArrayList = dbHelper.getRoomList();
+            }
+        }
     }
 
     public void setRoomsViewAdapter() {
@@ -94,20 +125,28 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         layoutManager = new GridLayoutManager(this, 2);
         roomCardAdapter = new RoomCardAdapter(roomArrayList, dbHelper);
 
-        roomRecyclerView.setLayoutManager(layoutManager);
-        roomRecyclerView.setAdapter(roomCardAdapter);
+        if(roomCardAdapter.getItemCount() > 0) {
+            roomRecyclerView.setLayoutManager(layoutManager);
+            roomRecyclerView.setAdapter(roomCardAdapter);
 
-        roomCardAdapter.setOnItemClickListener(position -> {
-            onItemClick(position);
-        });
+            roomCardAdapter.setOnItemClickListener(position -> {
+                onItemClick(position);
+            });
+        }
+
+
     }
 
 
     @Override
     public void onItemClick(int position) {
         Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
+
+        // Filter Device
         i.putExtra(LOCATION, roomArrayList.get(position));
-        startActivity(i);
+        startActivityForResult(i, 2);
+
+
         Toast.makeText(getApplicationContext(), roomArrayList.get(position), Toast.LENGTH_SHORT).show();
     }
 

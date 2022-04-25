@@ -6,8 +6,13 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.example.home_automation_app.Activities.BluetoothConnectActivity;
+import com.example.home_automation_app.Activities.HomeActivity;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -26,6 +31,7 @@ public class BtHelper {
 
     public BtHelper(String deviceAddress, UUID uuid, Context context) {
         this.deviceAddress = deviceAddress;
+        Log.d("BThelper", "Device address: " + deviceAddress);
         this.uuid = uuid;
         this.context = context;
     }
@@ -34,12 +40,13 @@ public class BtHelper {
         new ConnectBt().execute();
     }
     
-    public void sendMessage(String message){
+    public void sendMessage(String message) throws IOException{
         if(bluetoothSocket!=null) {
             try {
                 bluetoothSocket.getOutputStream().write(message.getBytes());
             } catch (IOException e) {
                 Toast.makeText(context.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                throw new IOException("Failed to write to device");
             }
         }
     }
@@ -79,9 +86,11 @@ public class BtHelper {
             // If connection not success mean that the device connected is not HC-O5 And it is not able to work on the app
             if(!connectSuccess) {
                 Toast.makeText(context, "Connection Failed. Is it a SPP Bluetooth? Try Again.", Toast.LENGTH_SHORT).show();
-                ((Activity)context).finish();
+//                ((Activity)context).finish();
             } else {
                 Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, HomeActivity.class);
+                context.startActivity(i);
             }
             progressDialog.dismiss();
         }
