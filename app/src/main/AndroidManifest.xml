@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Home_Automation_App">
         <activity
-            android:name=".Activities.BluetoothConnectActivity"
+            android:name=".Activities.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,15 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.HomeActivity" />
-        <activity android:name=".Activities.DevicesActivity"/>
-        <activity android:name=".Activities.AddDeviceActivity"
-            android:parentActivityName=".Activities.HomeActivity"/>
-        <activity android:name=".Activities.ControlDeviceActivity"
-            android:parentActivityName=".Activities.HomeActivity"/>
-        <activity android:name=".Activities.EditDeviceActivity"/>
 <!--        <activity-->
-<!--            android:name=".Activities.HomeActivity"-->
+<!--            android:name=".Activities.BluetoothConnectActivity"-->
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -37,6 +30,13 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
+<!--        <activity android:name=".Activities.HomeActivity" />-->
+        <activity android:name=".Activities.DevicesActivity"/>
+        <activity android:name=".Activities.AddDeviceActivity"
+            android:parentActivityName=".Activities.HomeActivity"/>
+        <activity android:name=".Activities.ControlDeviceActivity"
+            android:parentActivityName=".Activities.HomeActivity"/>
+        <activity android:name=".Activities.EditDeviceActivity"/>
     </application>
 
 </manifest>

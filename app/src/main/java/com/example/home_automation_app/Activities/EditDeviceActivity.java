@@ -167,9 +167,14 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     @Override
     public void onConfirmDeleteDevice(int deviceId) {
-        if(dbHelper.deleteDevice(deviceId)){
+        if(dbHelper.deleteDevice(device.getDeviceId())){
+
+            Intent i = new Intent(this, ControlDeviceActivity.class);
+            i.putExtra(HomeActivity.EDIT_CONFIRM, device);
+            i.putExtra("LOCATION", "DELETE");
+            setResult(1, i);
+            finish();
             Toast.makeText(getApplicationContext(), "Device Deleted", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(EditDeviceActivity.this, HomeActivity.class));
         }
 
     }

@@ -1,6 +1,7 @@
 package com.example.home_automation_app.Activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -110,12 +111,14 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         startActivityForResult(i, 2);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
             if (resultCode == 2) {
                 deviceArrayList = dbHelper.getAllDevices();
                 roomArrayList = dbHelper.getRoomList();
+                setRoomsViewAdapter();
             }
         }
     }
@@ -146,8 +149,6 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         i.putExtra(LOCATION, roomArrayList.get(position));
         startActivityForResult(i, 2);
 
-
-        Toast.makeText(getApplicationContext(), roomArrayList.get(position), Toast.LENGTH_SHORT).show();
     }
 
     public void onAddDeviceConfirm(String name, String type, String location, String onCmd, String offCmd) {
