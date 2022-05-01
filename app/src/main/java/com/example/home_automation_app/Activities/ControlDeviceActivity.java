@@ -98,17 +98,23 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == 1) {
+                String tempLocation = getIntent().getStringExtra("LOCATION");
 
                 if(location.equals("All Devices")){
                     deviceArrayList = dbHelper.getAllDevices();
-                    setDevicesViewAdapter();
-                } else if (getIntent().getStringExtra("LOCATION").equals(location)){
+                    if(deviceArrayList != null){
+                        setDevicesViewAdapter();
+                    } else {
+                        backToHome();
+                    }
+                } else {
                     deviceArrayList = dbHelper.getDevicesByLocation(location);
-                    setDevicesViewAdapter();
-                } else if (!getIntent().getStringExtra("LOCATION").equals(location)) {
-                    Intent i = new Intent(this, MainActivity.class);
-                    setResult(2, i);
-                    finish();
+                    if(deviceArrayList != null){
+                        setDevicesViewAdapter();
+                    }else{
+                        backToHome();
+                    }
+
                 }
             }
         }
@@ -120,7 +126,6 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         try {
             BluetoothConnectActivity.btHelper.sendMessage(tempDevice.getDeviceOnCmd());
         } catch(IOException e) {
-
             Intent i = new Intent(ControlDeviceActivity.this, BluetoothConnectActivity.class);
             startActivity(i);
             Toast.makeText(getApplicationContext(), "Connection Lost Please Connect to The System Again", Toast.LENGTH_SHORT).show();
@@ -136,14 +141,18 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
             BluetoothConnectActivity.btHelper.sendMessage(tempDevice.getDeviceOffCmd());
 
         } catch(IOException e) {
-            // Add disconnect function
-            // Start Again
-
             Intent i = new Intent(ControlDeviceActivity.this, BluetoothConnectActivity.class);
             startActivity(i);
             Toast.makeText(getApplicationContext(), "Connection Lost", Toast.LENGTH_SHORT).show();
         }
         //Toast.makeText(getApplicationContext(), tempDevice.getDeviceOffCmd(), Toast.LENGTH_SHORT).show();
     }
+
+    private void backToHome(){
+        Intent i = new Intent(this, MainActivity.class);
+        setResult(2, i);
+        finish();
+    }
+
 
 }

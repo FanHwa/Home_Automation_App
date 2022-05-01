@@ -83,17 +83,9 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         });
 
 
-
         if(roomArrayList != null) {
             setRoomsViewAdapter();
         }
-
-//        if(intent.getParcelableExtra(EDIT_CONFIRM) != null){
-//            // add update to the array list
-//            // Notify device and roomlist change
-//            // Update database
-//            //Use this new device, start control deviceActivity
-//        }
 
     }
 
@@ -118,7 +110,9 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
             if (resultCode == 2) {
                 deviceArrayList = dbHelper.getAllDevices();
                 roomArrayList = dbHelper.getRoomList();
-                setRoomsViewAdapter();
+                if(roomArrayList != null) {
+                    setRoomsViewAdapter();
+                }
             }
         }
     }

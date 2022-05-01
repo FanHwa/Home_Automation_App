@@ -26,9 +26,9 @@ import com.example.home_automation_app.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class EditDeviceActivity extends AppCompatActivity implements DeleteDeviceDialog.DeleteDeviceListener {
-    private TextInputLayout nameLayout, typeLayout, locationLayout, onCmdLayout, offCmdLayout;
+    private TextInputLayout nameLayout, locationLayout, onCmdLayout, offCmdLayout;
     private EditText deviceName, deviceLocation, deviceOnCmd, deviceOffCmd;
-    private AutoCompleteTextView deviceType;
+//    private AutoCompleteTextView deviceType;
     private Button confirmBtn, cancelBtn;
 
     private MyDBHelper dbHelper;
@@ -69,13 +69,13 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     private void callWidgets() {
         nameLayout = findViewById(R.id.input_layout_device_name);
-        typeLayout = findViewById(R.id.input_layout_device_type);
+//        typeLayout = findViewById(R.id.input_layout_device_type);
         locationLayout = findViewById(R.id.input_layout_device_location);
         onCmdLayout = findViewById(R.id.input_layout_device_onCmd);
         offCmdLayout = findViewById(R.id.input_layout_device_offCmd);
 
         deviceName = findViewById(R.id.device_name_field);
-        deviceType = findViewById(R.id.device_type_field);
+//        deviceType = findViewById(R.id.device_type_field);
         deviceLocation = findViewById(R.id.device_location_field);
         deviceOnCmd = findViewById(R.id.device_onCmd_field);
         deviceOffCmd = findViewById(R.id.device_offCmd_field);
@@ -86,7 +86,7 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     private void setInputData() {
         deviceName.setText(device.getDeviceName());
-        deviceType.setText(device.getDeviceType());
+//        deviceType.setText(device.getDeviceType());
         deviceLocation.setText(device.getDeviceLocation());
         deviceOnCmd.setText(device.getDeviceOnCmd());
         deviceOffCmd.setText(device.getDeviceOffCmd());
@@ -94,14 +94,14 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     private void confirm() {
         String name = deviceName.getText().toString();
-        String type = deviceType.getText().toString();
+//        String type = deviceType.getText().toString();
         String location = deviceLocation.getText().toString();
         String onCmd = deviceOnCmd.getText().toString();
         String offCmd = deviceOffCmd.getText().toString();
 
-        if(checkInputValid(name, type, location, onCmd, offCmd)){
+        if(checkInputValid(name, location, onCmd, offCmd)){
             device.setDeviceName(name);
-            device.setDeviceType(type);
+//            device.setDeviceType(type);
             device.setDeviceLocation(location);
             device.setDeviceOnCmd(onCmd);
             device.setDeviceOffCmd(offCmd);
@@ -109,7 +109,7 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
             Intent i = new Intent(this, ControlDeviceActivity.class);
             i.putExtra(HomeActivity.EDIT_CONFIRM, device);
-            i.putExtra("LOCATION", location);
+            i.putExtra("LOCATION", device.getDeviceLocation());
             setResult(1, i);
             finish();
             Toast.makeText(getApplicationContext(), "Device Updated", Toast.LENGTH_SHORT).show();
@@ -117,17 +117,12 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     }
 
-    private boolean checkInputValid(String name, String type, String location, String onCmd, String offCmd){
+    private boolean checkInputValid(String name, String location, String onCmd, String offCmd){
         boolean valid = true;
 
         if(name.isEmpty()){
             valid = false;
             nameLayout.setError("This field cannot be empty");
-        }
-
-        if(type.isEmpty()){
-            valid = false;
-            typeLayout.setError("Please Choose Device Type");
         }
 
         if(location.isEmpty()){

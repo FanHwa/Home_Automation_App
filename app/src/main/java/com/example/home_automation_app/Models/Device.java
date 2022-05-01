@@ -7,7 +7,7 @@ public class Device implements Parcelable {
 
     private int deviceId;
     private String deviceName;
-    private String deviceType;
+//    private String deviceType;
     private String deviceLocation;
     private String deviceOnCmd;
     private String deviceOffCmd;
@@ -15,9 +15,9 @@ public class Device implements Parcelable {
     public Device() {
     }
 
-    public Device(String deviceName, String deviceType, String deviceLocation, String deviceOnCmd, String deviceOffCmd) {
+    public Device(String deviceName, String deviceLocation, String deviceOnCmd, String deviceOffCmd) {
         this.deviceName = deviceName;
-        this.deviceType = deviceType;
+//        this.deviceType = deviceType;
         this.deviceLocation = deviceLocation;
         this.deviceOnCmd = deviceOnCmd;
         this.deviceOffCmd = deviceOffCmd;
@@ -39,13 +39,13 @@ public class Device implements Parcelable {
         this.deviceName = deviceName;
     }
 
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
+//    public String getDeviceType() {
+//        return deviceType;
+//    }
+//
+//    public void setDeviceType(String deviceType) {
+//        this.deviceType = deviceType;
+//    }
 
     public String getDeviceLocation() {
         return deviceLocation;
@@ -74,7 +74,7 @@ public class Device implements Parcelable {
     protected Device(Parcel in) {
         deviceId = in.readInt();
         deviceName = in.readString();
-        deviceType = in.readString();
+//        deviceType = in.readString();
         deviceLocation = in.readString();
         deviceOnCmd = in.readString();
         deviceOffCmd = in.readString();
@@ -101,7 +101,7 @@ public class Device implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(deviceId);
         dest.writeString(deviceName);
-        dest.writeString(deviceType);
+//        dest.writeString(deviceType);
         dest.writeString(deviceLocation);
         dest.writeString(deviceOnCmd);
         dest.writeString(deviceOffCmd);

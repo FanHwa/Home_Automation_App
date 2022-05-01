@@ -20,9 +20,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class AddDeviceActivity extends AppCompatActivity {
 
-    private TextInputLayout nameLayout, typeLayout, locationLayout, onCmdLayout, offCmdLayout;
+    private TextInputLayout nameLayout, locationLayout, onCmdLayout, offCmdLayout;
     private EditText deviceName, deviceLocation, deviceOnCmd, deviceOffCmd;
-    private AutoCompleteTextView deviceType;
+//    private AutoCompleteTextView deviceType;
     private Button confirmBtn, cancelBtn;
 
     private MyDBHelper dbHelper;
@@ -53,13 +53,13 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void callWidgets() {
         nameLayout = findViewById(R.id.input_layout_device_name);
-        typeLayout = findViewById(R.id.input_layout_device_type);
+//        typeLayout = findViewById(R.id.input_layout_device_type);
         locationLayout = findViewById(R.id.input_layout_device_location);
         onCmdLayout = findViewById(R.id.input_layout_device_onCmd);
         offCmdLayout = findViewById(R.id.input_layout_device_offCmd);
 
         deviceName = findViewById(R.id.device_name_field);
-        deviceType = findViewById(R.id.device_type_field);
+//        deviceType = findViewById(R.id.device_type_field);
         deviceLocation = findViewById(R.id.device_location_field);
         deviceOnCmd = findViewById(R.id.device_onCmd_field);
         deviceOffCmd = findViewById(R.id.device_offCmd_field);
@@ -70,15 +70,15 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void confirm() {
         String name = deviceName.getText().toString();
-        String type = deviceType.getText().toString();
+//        String type = deviceType.getText().toString();
         String location = deviceLocation.getText().toString();
         String onCmd = deviceOnCmd.getText().toString();
         String offCmd = deviceOffCmd.getText().toString();
         Device device = new Device();
 
-        if(checkInputValid(name, type, location, onCmd, offCmd)){
+        if(checkInputValid(name, location, onCmd, offCmd)){
             device.setDeviceName(name);
-            device.setDeviceType(type);
+//            device.setDeviceType(type);
             device.setDeviceLocation(location);
             device.setDeviceOnCmd(onCmd);
             device.setDeviceOffCmd(offCmd);
@@ -91,7 +91,7 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     }
 
-    private boolean checkInputValid(String name, String type, String location, String onCmd, String offCmd){
+    private boolean checkInputValid(String name, String location, String onCmd, String offCmd){
         boolean valid = true;
 
         if(name.isEmpty()){
@@ -99,10 +99,10 @@ public class AddDeviceActivity extends AppCompatActivity {
             nameLayout.setError("This field cannot be empty");
         }
 
-        if(type.isEmpty()){
-            valid = false;
-            typeLayout.setError("Please Choose Device Type");
-        }
+//        if(type.isEmpty()){
+//            valid = false;
+//            typeLayout.setError("Please Choose Device Type");
+//        }
 
         if(location.isEmpty()){
             valid = false;

@@ -37,13 +37,13 @@ public class AddDeviceDialog extends DialogFragment {
 
         // Call widgets
         nameLayout = view.findViewById(R.id.input_layout_device_name);
-        typeLayout = view.findViewById(R.id.input_layout_device_type);
+//        typeLayout = view.findViewById(R.id.input_layout_device_type);
         locationLayout = view.findViewById(R.id.input_layout_device_location);
         onCmdLayout = view.findViewById(R.id.input_layout_device_onCmd);
         offCmdLayout = view.findViewById(R.id.input_layout_device_offCmd);
 
         deviceName = view.findViewById(R.id.device_name_field);
-        deviceType = view.findViewById(R.id.device_type_field);
+//        deviceType = view.findViewById(R.id.device_type_field);
         deviceLocation = view.findViewById(R.id.device_location_field);
         deviceOnCmd = view.findViewById(R.id.device_onCmd_field);
         deviceOffCmd = view.findViewById(R.id.device_offCmd_field);
@@ -57,7 +57,7 @@ public class AddDeviceDialog extends DialogFragment {
                     String onCmd = deviceOnCmd.getText().toString();
                     String offCmd = deviceOffCmd.getText().toString();
 
-                    if(checkInputValid(name, type, location, onCmd, offCmd)){
+                    if(checkInputValid(name, location, onCmd, offCmd)){
                         mListener.onAddDeviceConfirm(name, type, location, onCmd, offCmd);
                     } else {
 
@@ -88,7 +88,7 @@ public class AddDeviceDialog extends DialogFragment {
         void onAddDeviceConfirm(String name, String type, String location, String onCmd, String offCmd);
     }
 
-    private boolean checkInputValid(String name, String type, String location, String onCmd, String offCmd){
+    private boolean checkInputValid(String name, String location, String onCmd, String offCmd){
         boolean valid = true;
         if(name.isEmpty()){
             valid = false;
