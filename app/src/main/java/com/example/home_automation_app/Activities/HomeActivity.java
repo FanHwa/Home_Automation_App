@@ -110,9 +110,12 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
             if (resultCode == 2) {
                 deviceArrayList = dbHelper.getAllDevices();
                 roomArrayList = dbHelper.getRoomList();
-                if(roomArrayList != null) {
+                if (roomArrayList != null) {
                     setRoomsViewAdapter();
                 }
+            }
+            if(resultCode == -1) {
+                finish();
             }
         }
     }
@@ -131,7 +134,6 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
             });
         }
 
-
     }
 
 
@@ -148,41 +150,5 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
     public void onAddDeviceConfirm(String name, String type, String location, String onCmd, String offCmd) {
         Toast.makeText(HomeActivity.this, "Confirm Added", Toast.LENGTH_SHORT).show();
     }
-
-
-
-
-//    private void tempDisplayRoom() {
-//        tempRoomView = findViewById(R.id.temp_room_list);
-//        ArrayList<String> roomArrayList = dbHelper.getRoomList();
-//
-//        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, roomArrayList);
-//        tempRoomView.setAdapter(adapter);
-//
-//    }
-
-//    private void showAddDevicePopUp() {
-//        LayoutInflater inflater = (LayoutInflater) HomeActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = inflater.inflate(R.layout.activity_add_edit_device, null);
-//
-//        addDevicePopUp = new PopupWindow(
-//                view,
-//                LayoutParams.WRAP_CONTENT,
-//                LayoutParams.WRAP_CONTENT);
-//
-//        Button confirmBtn = (Button) view.findViewById(R.id.add_device_confirm_btn);
-//        Button cancelBtn = (Button) view.findViewById(R.id.add_device_cancel_btn);
-//
-//        addDevicePopUp.showAtLocation(mRelativeLayout, Gravity.CENTER,0,0);
-//
-//        confirmBtn.setOnClickListener(v -> {
-//            Toast.makeText(getApplicationContext(), "Device Added", Toast.LENGTH_SHORT).show();
-//        });
-//
-//        cancelBtn.setOnClickListener(v -> {
-//           addDevicePopUp.dismiss();
-//        });
-//    }
-
 
 }

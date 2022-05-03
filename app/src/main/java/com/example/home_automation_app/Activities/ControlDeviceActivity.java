@@ -65,6 +65,7 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
     }
 
 
+
     private void setDevicesViewAdapter() {
         allDevicesRecyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 2);
@@ -127,8 +128,9 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
             BluetoothConnectActivity.btHelper.sendMessage(tempDevice.getDeviceOnCmd());
         } catch(IOException e) {
             Intent i = new Intent(ControlDeviceActivity.this, BluetoothConnectActivity.class);
-            startActivity(i);
             Toast.makeText(getApplicationContext(), "Connection Lost Please Connect to The System Again", Toast.LENGTH_SHORT).show();
+            setResult(-1, i);
+            finish();
         }
         //Remove  Before Submit
         //Toast.makeText(getApplicationContext(), tempDevice.getDeviceOnCmd(), Toast.LENGTH_SHORT).show();
