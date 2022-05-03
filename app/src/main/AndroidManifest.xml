@@ -22,7 +22,7 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
         <activity
-            android:name=".Activities.BluetoothConnectActivity"
+            android:name=".BluetoothConnectActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.HomeActivity" />
-        <activity android:name=".Activities.DevicesActivity"/>
         <activity android:name=".Activities.AddDeviceActivity"
             android:parentActivityName=".Activities.HomeActivity"/>
         <activity android:name=".Activities.ControlDeviceActivity"

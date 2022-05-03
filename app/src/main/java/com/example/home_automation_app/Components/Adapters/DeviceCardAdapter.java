@@ -14,32 +14,56 @@ import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
 
+/**
+ * This is an adapter class to set up the view for the device card
+ */
 public class DeviceCardAdapter extends RecyclerView.Adapter<DeviceCardAdapter.ViewHolder> {
     private ArrayList<Device> deviceArrayList;
     private OnItemClickListener mItemListener;
     private OnBtnClickListener mOnListener;
     private OffBtnClickListener mOffListener;
 
+    /**
+     * Interface for item click listener
+     */
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
+    /**
+     * set on click listener for the item card
+     * @param itemClickListener
+     */
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         mItemListener = itemClickListener;
     }
 
+    /**
+     * Interface of the on button listener
+     */
     public interface OnBtnClickListener{
         void onBtnClick(int position);
     }
 
+    /**
+     * Set on click listener for the on button
+     * @param onListener
+     */
     public void setOnBtnClick(OnBtnClickListener onListener) {
         mOnListener = onListener;
     }
 
+    /**
+     * Interface of the off button listener
+     */
     public interface OffBtnClickListener{
         void offBtnClick(int position);
     }
 
+    /**
+     * Set off button listener
+     * @param offListener
+     */
     public void setOffBtnClick(OffBtnClickListener offListener){
         mOffListener = offListener;
     }
@@ -58,6 +82,7 @@ public class DeviceCardAdapter extends RecyclerView.Adapter<DeviceCardAdapter.Vi
             onBtn = itemView.findViewById(R.id.card_device_on_btn);
             offBtn = itemView.findViewById(R.id.card_device_off_btn);
 
+            // Item card set on click listener
             itemView.setOnClickListener(v -> {
                 if (itemListener != null) {
                     int position = getAdapterPosition();
@@ -67,7 +92,7 @@ public class DeviceCardAdapter extends RecyclerView.Adapter<DeviceCardAdapter.Vi
                 }
             });
 
-
+            // Set On Button Onclick Listener
             onBtn.setOnClickListener(v -> {
                 if (onListener != null) {
                     int position = getAdapterPosition();
@@ -77,6 +102,7 @@ public class DeviceCardAdapter extends RecyclerView.Adapter<DeviceCardAdapter.Vi
                 }
             });
 
+            // Set Off Button Onclick Listener
             offBtn.setOnClickListener(v -> {
                 if (offListener != null) {
                     int position = getAdapterPosition();

@@ -1,6 +1,5 @@
 package com.example.home_automation_app.BluetoothHelper;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -11,12 +10,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.home_automation_app.Activities.BluetoothConnectActivity;
 import com.example.home_automation_app.Activities.HomeActivity;
 
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * This class is used to help the app to connect with the correct bluetooh devices
+ */
 public class BtHelper {
     private BluetoothAdapter bluetoothAdapter = null;
     private BluetoothSocket bluetoothSocket = null;
@@ -29,6 +30,11 @@ public class BtHelper {
     private UUID uuid = null;
     private Context context;
 
+    /**
+     * Constructor for the BtHelper Class
+     * @param deviceAddress Device MAC Address
+     * @param uuid UUID of the devices
+     */
     public BtHelper(String deviceAddress, UUID uuid, Context context) {
         this.deviceAddress = deviceAddress;
         Log.d("BThelper", "Device address: " + deviceAddress);
@@ -36,10 +42,18 @@ public class BtHelper {
         this.context = context;
     }
 
+    /**
+     * Public method to call for connection in other class
+     */
     public void Connect() {
         new ConnectBt().execute();
     }
-    
+
+    /**
+     * Funtion to send the command to the HC-05
+     * @param message
+     * @throws IOException
+     */
     public void sendMessage(String message) throws IOException{
         if(bluetoothSocket!=null) {
             try {
@@ -51,12 +65,14 @@ public class BtHelper {
         }
     }
 
+    /**
+     * Function to connect the devices
+     */
     private class ConnectBt extends AsyncTask<Void, Void, Void> {
         private boolean connectSuccess = true;
 
         @Override
         protected void onPreExecute() {
-//            progressDialog = ProgressDialog.show(get, "Connecting...", "Please wait!!!");
             super.onPreExecute();;
             progressDialog = ProgressDialog.show(context, "Connecting...", "Please wait!!!");
         }
@@ -85,7 +101,7 @@ public class BtHelper {
 
             // If connection not success mean that the device connected is not HC-O5 And it is not able to work on the app
             if(!connectSuccess) {
-                Toast.makeText(context, "Connection Failed. Is it a SPP Bluetooth? Try Again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Connection Failed. Is it a SSP Bluetooth? Try Again.", Toast.LENGTH_SHORT).show();
 //                ((Activity)context).finish();
             } else {
                 Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();

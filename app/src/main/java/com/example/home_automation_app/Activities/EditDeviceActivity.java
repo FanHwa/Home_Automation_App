@@ -25,10 +25,12 @@ import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * This is an activity class to edit the information of the selected device
+ */
 public class EditDeviceActivity extends AppCompatActivity implements DeleteDeviceDialog.DeleteDeviceListener {
     private TextInputLayout nameLayout, locationLayout, onCmdLayout, offCmdLayout;
     private EditText deviceName, deviceLocation, deviceOnCmd, deviceOffCmd;
-//    private AutoCompleteTextView deviceType;
     private Button confirmBtn, cancelBtn;
 
     private MyDBHelper dbHelper;
@@ -52,7 +54,6 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
         actionBar.setTitle("Edit Device");
 
         dbHelper = new MyDBHelper(this,null,null,1);
-//        device = dbHelper.getDeviceById(deviceId);
 
         callWidgets();
         setInputData();
@@ -67,15 +68,14 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     }
 
+    // Call Widgets
     private void callWidgets() {
         nameLayout = findViewById(R.id.input_layout_device_name);
-//        typeLayout = findViewById(R.id.input_layout_device_type);
         locationLayout = findViewById(R.id.input_layout_device_location);
         onCmdLayout = findViewById(R.id.input_layout_device_onCmd);
         offCmdLayout = findViewById(R.id.input_layout_device_offCmd);
 
         deviceName = findViewById(R.id.device_name_field);
-//        deviceType = findViewById(R.id.device_type_field);
         deviceLocation = findViewById(R.id.device_location_field);
         deviceOnCmd = findViewById(R.id.device_onCmd_field);
         deviceOffCmd = findViewById(R.id.device_offCmd_field);
@@ -84,24 +84,27 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
         cancelBtn = findViewById(R.id.add_edit_device_cancel_btn);
     }
 
+    /**
+     * Function to fill up data of the device that need to be deited
+     */
     private void setInputData() {
         deviceName.setText(device.getDeviceName());
-//        deviceType.setText(device.getDeviceType());
         deviceLocation.setText(device.getDeviceLocation());
         deviceOnCmd.setText(device.getDeviceOnCmd());
         deviceOffCmd.setText(device.getDeviceOffCmd());
     }
 
+    /**
+     * Function when confirm button is pressed
+     */
     private void confirm() {
         String name = deviceName.getText().toString();
-//        String type = deviceType.getText().toString();
         String location = deviceLocation.getText().toString();
         String onCmd = deviceOnCmd.getText().toString();
         String offCmd = deviceOffCmd.getText().toString();
 
         if(checkInputValid(name, location, onCmd, offCmd)){
             device.setDeviceName(name);
-//            device.setDeviceType(type);
             device.setDeviceLocation(location);
             device.setDeviceOnCmd(onCmd);
             device.setDeviceOffCmd(offCmd);
@@ -117,6 +120,7 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
 
     }
 
+    // Function to check whether all the text input is filled
     private boolean checkInputValid(String name, String location, String onCmd, String offCmd){
         boolean valid = true;
 
@@ -150,6 +154,7 @@ public class EditDeviceActivity extends AppCompatActivity implements DeleteDevic
         return super.onCreateOptionsMenu(menu);
     }
 
+    // When the delete icon is pressed the delete dialog will prompt pur
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_device_btn) {

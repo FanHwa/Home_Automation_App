@@ -7,24 +7,23 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    tools:context=".Activities.BluetoothConnectActivity">
+    tools:context=".BluetoothConnectActivity">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Devices"
-        android:id="@+id/devicesTitleTextview"
+        android:text="Please Ensure The bluetooth device is paired in the setting"
+        android:id="@+id/warningTextView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
-
 
     <ListView
         android:id="@+id/devicesList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/scanDeviceButton"
-        android:layout_below="@id/devicesTitleTextview"
+        android:layout_below="@id/warningTextView"
         android:layout_centerHorizontal="true" />
 
     <Button

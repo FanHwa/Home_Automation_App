@@ -14,19 +14,34 @@ import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
 
+/**
+ * This is an adapter class to set up the view of room item card
+ */
 public class RoomCardAdapter extends RecyclerView.Adapter<RoomCardAdapter.ViewHolder> {
     private ArrayList<String> roomsArrayList;
     private OnItemClickListener mListener;
     private MyDBHelper dbHelper;
 
+    /**
+     * Interface when the item card on click
+     */
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
+    /**
+     * Set on click listener for the item card
+     * @param onItemClickListener
+     */
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         mListener = onItemClickListener;
     }
 
+    /**
+     * Constructor for Room Card Adapter
+     * @param roomsArrayList Room Array List
+     * @param dbHelper Database helper
+     */
     public RoomCardAdapter(ArrayList<String> roomsArrayList, MyDBHelper dbHelper) {
         this.roomsArrayList = roomsArrayList;
         this.dbHelper = dbHelper;
@@ -40,6 +55,7 @@ public class RoomCardAdapter extends RecyclerView.Adapter<RoomCardAdapter.ViewHo
             roomName = itemView.findViewById(R.id.card_room_name);
             deviceQty = itemView.findViewById(R.id.card_room_device_qty);
 
+            // Set on click listener when item card click
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     int position = getAdapterPosition();
@@ -64,8 +80,6 @@ public class RoomCardAdapter extends RecyclerView.Adapter<RoomCardAdapter.ViewHo
     public void onBindViewHolder(@NonNull RoomCardAdapter.ViewHolder holder, int position) {
         String tempRoomString = roomsArrayList.get(position);
         holder.roomName.setText(tempRoomString);
-
-
 
         String numDevicesString = dbHelper.getNumOfDevicesByLocation(tempRoomString) + " devices";
         holder.deviceQty.setText(numDevicesString);

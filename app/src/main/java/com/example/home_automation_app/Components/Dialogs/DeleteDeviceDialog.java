@@ -12,13 +12,16 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.home_automation_app.R;
 
+/**
+ * This is a Delete device dialog class
+ */
 public class DeleteDeviceDialog extends DialogFragment {
     private DeleteDeviceListener mListener;
     private int deviceId;
 
     /**
      * Constructor for DeleteDeviceDialog
-     * @param deviceId
+     * @param deviceId Device Id
      */
     public DeleteDeviceDialog(int deviceId) {
         this.deviceId = deviceId;

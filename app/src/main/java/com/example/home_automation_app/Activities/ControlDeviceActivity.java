@@ -3,7 +3,6 @@ package com.example.home_automation_app.Activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -12,15 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.home_automation_app.BluetoothConnectActivity;
 import com.example.home_automation_app.Components.Adapters.DeviceCardAdapter;
 import com.example.home_automation_app.DatabaseHelper.MyDBHelper;
-import com.example.home_automation_app.MainActivity;
 import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This is a activity class for the user to control the device in the app
+ */
 public class ControlDeviceActivity extends AppCompatActivity implements DeviceCardAdapter.OnItemClickListener, DeviceCardAdapter.OnBtnClickListener, DeviceCardAdapter.OffBtnClickListener{
 
     private RecyclerView allDevicesRecyclerView;
@@ -50,12 +52,16 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         allDevicesRecyclerView = (RecyclerView) findViewById(R.id.all_device_recycle_view);
 
         dbHelper = new MyDBHelper(this,null,null,1);
+
+        // If the location pass on is ALl devices then call data of all deviecs
+        // else call data of the devices according the location
         if(location.equals("All Devices")) {
             deviceArrayList = dbHelper.getAllDevices();
         } else {
             deviceArrayList = dbHelper.getDevicesByLocation(location);
         }
 
+        // If device list not null then set the recycle view for the devices
         if(deviceArrayList != null) {
             setDevicesViewAdapter();
         } else {
@@ -65,7 +71,9 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
     }
 
 
-
+    /**
+     * function to set up the recycle view of all the devices
+     */
     private void setDevicesViewAdapter() {
         allDevicesRecyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 2);
@@ -87,6 +95,10 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         });
     }
 
+    /**
+     * Go to edit device activity when the device item card is click
+     * @param position Position of the device in the list
+     */
     @Override
     public void onItemClick(int position) {
         Intent i = new Intent(ControlDeviceActivity.this, EditDeviceActivity.class);
@@ -95,12 +107,11 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         startActivityForResult(i, 1);
     }
 
+    // Refresh the device list when the edit editdevice activity end
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == 1) {
-                String tempLocation = getIntent().getStringExtra("LOCATION");
-
                 if(location.equals("All Devices")){
                     deviceArrayList = dbHelper.getAllDevices();
                     if(deviceArrayList != null){
@@ -115,12 +126,15 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
                     }else{
                         backToHome();
                     }
-
                 }
             }
         }
     }
 
+    /**
+     * Function to send out on command when the on button click
+     * @param position position of the device in the array list
+     */
     @Override
     public void onBtnClick(int position) {
         Device tempDevice = deviceArrayList.get(position);
@@ -136,6 +150,10 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         //Toast.makeText(getApplicationContext(), tempDevice.getDeviceOnCmd(), Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Function to send out off command when the off button click
+     * @param position position of the device in the array list
+     */
     @Override
     public void offBtnClick(int position) {
         Device tempDevice = deviceArrayList.get(position);
@@ -150,8 +168,9 @@ public class ControlDeviceActivity extends AppCompatActivity implements DeviceCa
         //Toast.makeText(getApplicationContext(), tempDevice.getDeviceOffCmd(), Toast.LENGTH_SHORT).show();
     }
 
+    // Return to home activity function
     private void backToHome(){
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, HomeActivity.class);
         setResult(2, i);
         finish();
     }

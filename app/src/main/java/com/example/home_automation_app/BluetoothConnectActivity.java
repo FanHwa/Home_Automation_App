@@ -1,8 +1,9 @@
-package com.example.home_automation_app.Activities;
+package com.example.home_automation_app;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,12 +18,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.home_automation_app.BluetoothHelper.BtHelper;
-import com.example.home_automation_app.R;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * This activity class is used to choose the device to be connected when the app start
+ */
 public class BluetoothConnectActivity extends AppCompatActivity {
 
     // Widgets
@@ -35,6 +38,8 @@ public class BluetoothConnectActivity extends AppCompatActivity {
     public static String DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
     public static BtHelper btHelper;
+
+    //UUID of the HC-05 module
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     ActivityResultLauncher<Intent> activityResultLauncher =
@@ -57,6 +62,8 @@ public class BluetoothConnectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_connect);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         // Calling widgets
         scanDeviceBtn = (Button) findViewById(R.id.scanDeviceButton);
         devicesList = (ListView) findViewById(R.id.devicesList);
@@ -66,13 +73,10 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
         if(bluetoothAdapter == null) {
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Found", Toast.LENGTH_SHORT).show();
-
-            // Finish APK
             finish();
         }
         else if(!bluetoothAdapter.isEnabled()) {
             Intent turnOnBlt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(turnOnBlt,1);
             activityResultLauncher.launch(turnOnBlt);
         }
 
@@ -80,10 +84,14 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Function to get the devices that had been paired with the phone
+     */
     private void scanDevicesList() {
         devices = bluetoothAdapter.getBondedDevices();
         ArrayList list = new ArrayList();
 
+        // Get Paired Device List
         if(devices.size()>0) {
             // Get devices name and MAC Address
             for(BluetoothDevice bt : devices) {
@@ -108,10 +116,7 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
             btHelper = new BtHelper(address, myUUID, BluetoothConnectActivity.this);
             btHelper.Connect();
-            //Change to next activity
-//            Intent i = new Intent(BluetoothConnectActivity.this, HomeActivity.class);
-//            i.putExtra(DEVICE_ADDRESS, address);
-//            startActivity(i);
+
         }
     };
 

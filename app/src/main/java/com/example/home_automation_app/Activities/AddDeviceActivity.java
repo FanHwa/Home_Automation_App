@@ -18,11 +18,13 @@ import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * This is an activity class to add new device
+ */
 public class AddDeviceActivity extends AppCompatActivity {
 
     private TextInputLayout nameLayout, locationLayout, onCmdLayout, offCmdLayout;
     private EditText deviceName, deviceLocation, deviceOnCmd, deviceOffCmd;
-//    private AutoCompleteTextView deviceType;
     private Button confirmBtn, cancelBtn;
 
     private MyDBHelper dbHelper;
@@ -51,15 +53,14 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     }
 
+    // Call all the widgets
     private void callWidgets() {
         nameLayout = findViewById(R.id.input_layout_device_name);
-//        typeLayout = findViewById(R.id.input_layout_device_type);
         locationLayout = findViewById(R.id.input_layout_device_location);
         onCmdLayout = findViewById(R.id.input_layout_device_onCmd);
         offCmdLayout = findViewById(R.id.input_layout_device_offCmd);
 
         deviceName = findViewById(R.id.device_name_field);
-//        deviceType = findViewById(R.id.device_type_field);
         deviceLocation = findViewById(R.id.device_location_field);
         deviceOnCmd = findViewById(R.id.device_onCmd_field);
         deviceOffCmd = findViewById(R.id.device_offCmd_field);
@@ -68,9 +69,11 @@ public class AddDeviceActivity extends AppCompatActivity {
         cancelBtn = findViewById(R.id.add_edit_device_cancel_btn);
     }
 
+    /**
+     * Function when conform button is pressed
+     */
     private void confirm() {
         String name = deviceName.getText().toString();
-//        String type = deviceType.getText().toString();
         String location = deviceLocation.getText().toString();
         String onCmd = deviceOnCmd.getText().toString();
         String offCmd = deviceOffCmd.getText().toString();
@@ -78,7 +81,6 @@ public class AddDeviceActivity extends AppCompatActivity {
 
         if(checkInputValid(name, location, onCmd, offCmd)){
             device.setDeviceName(name);
-//            device.setDeviceType(type);
             device.setDeviceLocation(location);
             device.setDeviceOnCmd(onCmd);
             device.setDeviceOffCmd(offCmd);
@@ -91,6 +93,7 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     }
 
+    // Function to check whether all the text input is filled
     private boolean checkInputValid(String name, String location, String onCmd, String offCmd){
         boolean valid = true;
 
@@ -98,11 +101,6 @@ public class AddDeviceActivity extends AppCompatActivity {
             valid = false;
             nameLayout.setError("This field cannot be empty");
         }
-
-//        if(type.isEmpty()){
-//            valid = false;
-//            typeLayout.setError("Please Choose Device Type");
-//        }
 
         if(location.isEmpty()){
             valid = false;

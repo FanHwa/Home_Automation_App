@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.home_automation_app.BluetoothHelper.BtHelper;
 import com.example.home_automation_app.Components.Adapters.RoomCardAdapter;
-import com.example.home_automation_app.Components.Dialogs.AddDeviceDialog;
 import com.example.home_automation_app.DatabaseHelper.MyDBHelper;
 import com.example.home_automation_app.Models.Device;
 import com.example.home_automation_app.R;
@@ -25,7 +24,10 @@ import com.example.home_automation_app.R;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.OnItemClickListener, AddDeviceDialog.AddDeviceListener {
+/**
+ * This is activity class for home activity
+ */
+public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.OnItemClickListener {
 
     // Widgets
     private Button addDeviceBtn, allDeviceBtn;
@@ -58,12 +60,6 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
 
         Intent intent = getIntent();
 
-
-//        deviceAddress = intent.getStringExtra(BluetoothConnectActivity.DEVICE_ADDRESS);
-
-//        btHelper = new BtHelper(deviceAddress, myUUID, HomeActivity.this);
-//        btHelper.Connect();
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home);
 
@@ -73,23 +69,25 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         deviceArrayList = dbHelper.getAllDevices();
         roomArrayList = dbHelper.getRoomList();
 
+        // Set Add device Button Listener
         addDeviceBtn.setOnClickListener(v -> {
             Intent i = new Intent(HomeActivity.this, AddDeviceActivity.class);
             startActivityForResult(i, 2);
         });
 
+        // Set All device button listener
         allDeviceBtn.setOnClickListener(v -> {
             viewAllDevice();
         });
 
-
+        // If the room array list is not null then set up the room list recycler view
         if(roomArrayList != null) {
             setRoomsViewAdapter();
         }
 
     }
 
-
+    // Call all the widgets
     private void callWidgets() {
         addDeviceBtn = (Button)findViewById(R.id.add_device_btn);
         allDeviceBtn = (Button)findViewById(R.id.show_all_devices_btn);
@@ -97,16 +95,21 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         roomRecyclerView = findViewById(R.id.room_recycle_view);
     }
 
+    /**
+     * When All devices button click
+     */
     private void viewAllDevice() {
         Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
         i.putExtra(LOCATION, "All Devices");
         startActivityForResult(i, 2);
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
+            // Refresh the room and device list when the reqest code is 2
             if (resultCode == 2) {
                 deviceArrayList = dbHelper.getAllDevices();
                 roomArrayList = dbHelper.getRoomList();
@@ -114,12 +117,16 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
                     setRoomsViewAdapter();
                 }
             }
+            // Close the activity if the result code is -1
             if(resultCode == -1) {
                 finish();
             }
         }
     }
 
+    /**
+     * Set up the recycle view for room list
+     */
     public void setRoomsViewAdapter() {
         roomRecyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(this, 2);
@@ -137,8 +144,13 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
     }
 
 
+    /**
+     * Set action when the room item card click
+     * @param position
+     */
     @Override
     public void onItemClick(int position) {
+        // Start ControlDeviceActivity and pass the location name to the activity
         Intent i = new Intent(HomeActivity.this, ControlDeviceActivity.class);
 
         // Filter Device
@@ -146,9 +158,4 @@ public class HomeActivity extends AppCompatActivity implements RoomCardAdapter.O
         startActivityForResult(i, 2);
 
     }
-
-    public void onAddDeviceConfirm(String name, String type, String location, String onCmd, String offCmd) {
-        Toast.makeText(HomeActivity.this, "Confirm Added", Toast.LENGTH_SHORT).show();
-    }
-
 }

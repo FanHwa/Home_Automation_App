@@ -12,6 +12,9 @@ import com.example.home_automation_app.Models.Device;
 
 import java.util.ArrayList;
 
+/**
+ * This is a database helper class to maintain and control the data for the appp
+ */
 public class MyDBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -23,7 +26,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
     // Table devices - column names
     public static final String DEVICE_ID = "device_id";
     public static final String DEVICE_NAME = "device_name";
-//    public static final String DEVICE_TYPE = "device_type";
     public static final String DEVICE_LOCATION = "device_location";
     public static final String DEVICE_ON_CMD = "device_on_cmd";
     public static final String DEVICE_OFF_CMD = "device_off_cmd";
@@ -35,19 +37,26 @@ public class MyDBHelper extends SQLiteOpenHelper {
             DEVICE_OFF_CMD + " TEXT );";
 
     // Query to add initial devices
-//    private final Device device1 = new Device("LED 1", "Dining Room", "led1_on", "led1_off");
     private static final String led1 = createInitialDevices("LED 1", "Dining Room", "led1_on", "led1_off");
     private static final String led2 = createInitialDevices("LED 2", "Kitchen", "led2_on", "led2_off");
-    public static final String led3 = createInitialDevices("LED 3", "Living Room", "led3_on", "led3_off");
-    public static final String led4 = createInitialDevices("LED 4", "Bedroom 1", "led4_on", "led4_off");
-    public static final String motion = createInitialDevices("Light Motion", "Living Room", "motion_on", "motion_off");
-    public static final String gateMotion = createInitialDevices("Gate Motion", "Car Porch", "gateMotion_on", "gateMotion_off");
-    public static final String gate = createInitialDevices("Gate", "Car Porch", "gate_on", "gate_off");
-    public static final String airCond = createInitialDevices("Air Cond", "Living Room", "airCond_on",  "airCond_off");
-    public static final String led5 = createInitialDevices("LED 5", "Bedroom 2", "led5_on", "led5_off");
-    public static final String led6 = createInitialDevices("LED 6", "Bedroom 3", "led6_on", "led6_off");
-    public static final String led7 = createInitialDevices("LED 7", "Bedroom 4", "led7_on", "led7_off");
+    private static final String led3 = createInitialDevices("LED 3", "Living Room", "led3_on", "led3_off");
+    private static final String led4 = createInitialDevices("LED 4", "Bedroom 1", "led4_on", "led4_off");
+    private static final String motion = createInitialDevices("Light Motion", "Living Room", "motion_on", "motion_off");
+    private static final String gateMotion = createInitialDevices("Gate Motion", "Car Porch", "gateMotion_on", "gateMotion_off");
+    private static final String gate = createInitialDevices("Gate", "Car Porch", "gate_on", "gate_off");
+    private static final String airCond = createInitialDevices("Air Cond", "Living Room", "airCond_on",  "airCond_off");
+    private static final String led5 = createInitialDevices("LED 5", "Second Floor", "led5_on", "led5_off");
+    private static final String led6 = createInitialDevices("LED 6", "Second Floor", "led6_on", "led6_off");
+    private static final String led7 = createInitialDevices("LED 7", "Second Floor", "led7_on", "led7_off");
 
+    /**
+     * Function to create query for inserting devices
+     * @param name Device Name
+     * @param location Location of the device
+     * @param onCmd On command of the device
+     * @param offCmd Off command of the device
+     * @return
+     */
     private static String createInitialDevices(String name, String location, String onCmd, String offCmd) {
         String query = "INSERT INTO " + TABLE_DEVICES + "(" + DEVICE_NAME + ", " + DEVICE_LOCATION + ", " +
                 DEVICE_ON_CMD + ", " + DEVICE_OFF_CMD + ") VALUES ('" + name + "', '" + location + "', '" +
@@ -55,6 +64,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return query;
     }
 
+    /**
+     * Constructor for the database helper class
+     */
     public MyDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -172,6 +184,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return deviceArrayList;
     }
 
+    /**
+     * Get ddevices accoridng location
+     * @param location Location Name
+     * @return list of device of the location
+     */
     public int getNumOfDevicesByLocation(String location) {
         String query = "SELECT * FROM " + TABLE_DEVICES +
                 " WHERE " + DEVICE_LOCATION + " = '" + location + "' ";
@@ -186,6 +203,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    /**
+     *
+     * @param id Device ID
+     * @return
+     */
     public Device getDeviceById(int id) {
         String query = "SELECT * FROM " + TABLE_DEVICES +
                 " WHERE " + DEVICE_ID + " = " + id + " ";
@@ -255,6 +277,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     *
+     * @param deviceID Device Id
+     * @return true if delete successful else false
+     */
     public  boolean deleteDevice(int deviceID) {
         boolean result = false;
         String query = "SELECT * FROM " + TABLE_DEVICES + " WHERE " +
