@@ -45,6 +45,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String gateMotion = createInitialDevices("Gate Motion", "Car Porch", "gateMotion_on", "gateMotion_off");
     private static final String gate = createInitialDevices("Gate", "Car Porch", "gate_on", "gate_off");
     private static final String airCond = createInitialDevices("Air Cond", "Living Room", "airCond_on",  "airCond_off");
+    private static final String tempSensor = createInitialDevices("Temp Sensor", "Living Room", "tempSensor_on", "tempSensor_off");
     private static final String led5 = createInitialDevices("LED 5", "Second Floor", "led5_on", "led5_off");
     private static final String led6 = createInitialDevices("LED 6", "Second Floor", "led6_on", "led6_off");
     private static final String led7 = createInitialDevices("LED 7", "Second Floor", "led7_on", "led7_off");
@@ -82,6 +83,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(gateMotion);
         db.execSQL(gate);
         db.execSQL(airCond);
+        db.execSQL(tempSensor);
         db.execSQL(led5);
         db.execSQL(led6);
         db.execSQL(led7);
