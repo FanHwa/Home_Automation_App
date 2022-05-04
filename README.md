@@ -18,5 +18,5 @@ If you are using different bluetooth module please change the uuid in the [Bluet
 
 # Things To Do Before Running the App
 
-Please ensure that the bluetooth modules of the home automation system is paired in the setting of the phone before starting the app <br/>
+Please ensure that the bluetooth of the devices is on and the bluetooth modules of the home automation system is paired in the setting of the phone before starting the app <br/>
 
