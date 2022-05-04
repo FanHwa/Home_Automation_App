@@ -4,5 +4,9 @@ This Android Mobile Application is written to control the home automation system
 Therefore, there is a protocol to check whether the connected module is HC-05 or not.
 If you are using different bluetooth module please change the uuid in the [BluetoothConnectActivity.java](https://github.com/FanHwa/Home_Automation_App/blob/master/app/src/main/java/com/example/home_automation_app/BluetoothConnectActivity.java) file.
 
+# Two way to run the file 
+
 # Things To Do Before Running the App
-Please ensure that the bluetooth modules of the home automation system is paired in the setting of the phone before starting the app 
+
+Please ensure that the bluetooth modules of the home automation system is paired in the setting of the phone before starting the app <br/>
+
